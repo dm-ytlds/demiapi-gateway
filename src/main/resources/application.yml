@@ -1,0 +1,33 @@
+server:
+  port: 8090
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://localhost:8123
+          predicates:
+            - Path=/api/**
+      default-filters:
+        - AddResponseHeader=source, demi
+
+# dubbo 实现 RPC 远程过程调用
+dubbo:
+  application:
+    name: dubbo-demiapi-consumer
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    id: nacos-registry-consumer
+    address: nacos://localhost:8848
+
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
+
